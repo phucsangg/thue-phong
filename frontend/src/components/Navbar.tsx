@@ -15,7 +15,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="bg-glass backdrop-blur-md sticky top-0 z-[50] text-white border-b border-white/5 shadow-lg shadow-brand-navy-950/20">
+    <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-[50] text-slate-800 border-b border-slate-200/80 shadow-sm shadow-slate-150/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -40,36 +40,36 @@ export const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <Link to="/" className="hover:text-brand-teal-300 transition-colors text-sm font-semibold tracking-wide relative group py-2">
+            <Link to="/" className="text-slate-600 hover:text-[#0072bc] transition-colors text-sm font-bold tracking-wide relative group py-2">
               Trang chủ
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-teal-400 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#0072bc] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link to="/rooms" className="hover:text-brand-teal-300 transition-colors text-sm font-semibold tracking-wide relative group py-2">
+            <Link to="/rooms" className="text-slate-600 hover:text-[#0072bc] transition-colors text-sm font-bold tracking-wide relative group py-2">
               Danh sách phòng
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-teal-400 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#0072bc] transition-all duration-300 group-hover:w-full"></span>
             </Link>
             
             {isAuthenticated ? (
               <div className="flex items-center gap-5">
                 {user?.role === 'ADMIN' && (
-                  <Link to="/admin" className="flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-4 py-1.5 rounded-xl border border-white/15 text-sm font-semibold transition-all hover:scale-105 active:scale-95 shadow-sm">
-                    <LayoutDashboard className="w-4 h-4 text-brand-teal-400" />
+                  <Link to="/admin" className="flex items-center gap-1.5 bg-[#0072bc]/5 hover:bg-[#0072bc]/10 px-4 py-1.5 rounded-xl border border-[#0072bc]/15 text-[#0072bc] text-sm font-bold transition-all hover:scale-105 active:scale-95 shadow-sm">
+                    <LayoutDashboard className="w-4 h-4 text-[#0072bc]" />
                     Bảng quản trị
                   </Link>
                 )}
                 {user?.role === 'USER' && (
-                  <Link to="/my-requests" className="flex items-center gap-1.5 text-sm font-semibold hover:text-brand-teal-300 transition-colors hover:scale-105 active:scale-95 duration-200">
-                    <FileText className="w-4 h-4 text-brand-teal-400" />
+                  <Link to="/my-requests" className="flex items-center gap-1.5 text-sm font-bold text-slate-650 hover:text-[#0072bc] transition-colors hover:scale-105 active:scale-95 duration-200">
+                    <FileText className="w-4 h-4 text-[#0072bc]" />
                     Yêu cầu thuê
                   </Link>
                 )}
-                <Link to="/profile" className="flex items-center gap-1.5 text-sm font-semibold hover:text-brand-teal-300 transition-colors hover:scale-105 active:scale-95 duration-200">
-                  <UserIcon className="w-4 h-4 text-brand-teal-400" />
+                <Link to="/profile" className="flex items-center gap-1.5 text-sm font-bold text-slate-650 hover:text-[#0072bc] transition-colors hover:scale-105 active:scale-95 duration-200">
+                  <UserIcon className="w-4 h-4 text-[#0072bc]" />
                   Hồ sơ cá nhân
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-1.5 text-sm font-semibold text-rose-400 hover:text-rose-350 transition-colors hover:scale-105 active:scale-95 duration-200"
+                  className="flex items-center gap-1.5 text-sm font-bold text-rose-600 hover:text-rose-500 transition-colors hover:scale-105 active:scale-95 duration-200"
                 >
                   <LogOut className="w-4 h-4" />
                   Đăng xuất
@@ -77,10 +77,10 @@ export const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center gap-5">
-                <Link to="/login" className="hover:text-brand-teal-300 transition-colors text-sm font-semibold tracking-wide py-2">Đăng nhập</Link>
+                <Link to="/login" className="text-slate-650 hover:text-[#0072bc] transition-colors text-sm font-bold tracking-wide py-2">Đăng nhập</Link>
                 <Link
                   to="/register"
-                  className="bg-gradient-to-r from-brand-teal-500 to-emerald-500 hover:from-brand-teal-600 hover:to-emerald-600 text-white px-5 py-2 rounded-xl text-sm font-bold transition-all shadow-md shadow-brand-teal-500/10 hover:scale-105 active:scale-95"
+                  className="bg-gradient-to-r from-blue-600 to-[#0072bc] hover:from-blue-700 hover:to-[#0062a3] text-white px-5 py-2 rounded-xl text-sm font-bold transition-all shadow-md shadow-blue-500/10 hover:scale-105 active:scale-95"
                 >
                   Đăng ký
                 </Link>
@@ -92,7 +92,7 @@ export const Navbar = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md hover:bg-brand-navy-800 hover:text-brand-teal-400 focus:outline-none transition-colors"
+              className="inline-flex items-center justify-center p-2 rounded-md hover:bg-slate-100 text-slate-650 hover:text-[#0072bc] focus:outline-none transition-colors"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -102,20 +102,20 @@ export const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-brand-navy-900 border-t border-brand-navy-800 px-4 pt-2 pb-4 space-y-3">
+        <div className="md:hidden bg-white border-t border-slate-200/80 px-4 pt-2 pb-4 space-y-3 shadow-lg">
           <Link
             to="/"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 p-2 hover:bg-brand-navy-800 rounded-lg text-sm font-medium"
+            className="flex items-center gap-2 p-2 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-semibold"
           >
-            <Home className="w-4 h-4" /> Trang chủ
+            <Home className="w-4 h-4 text-[#0072bc]" /> Trang chủ
           </Link>
           <Link
             to="/rooms"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 p-2 hover:bg-brand-navy-800 rounded-lg text-sm font-medium"
+            className="flex items-center gap-2 p-2 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-semibold"
           >
-            <FileText className="w-4 h-4" /> Danh sách phòng
+            <FileText className="w-4 h-4 text-[#0072bc]" /> Danh sách phòng
           </Link>
 
           {isAuthenticated ? (
@@ -124,7 +124,7 @@ export const Navbar = () => {
                 <Link
                   to="/admin"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2 p-2 hover:bg-brand-navy-800 rounded-lg text-sm font-medium text-brand-teal-400"
+                  className="flex items-center gap-2 p-2 hover:bg-[#0072bc]/5 rounded-lg text-sm font-bold text-[#0072bc]"
                 >
                   <LayoutDashboard className="w-4 h-4" /> Bảng quản trị
                 </Link>
@@ -133,38 +133,38 @@ export const Navbar = () => {
                 <Link
                   to="/my-requests"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2 p-2 hover:bg-brand-navy-800 rounded-lg text-sm font-medium"
+                  className="flex items-center gap-2 p-2 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-semibold"
                 >
-                  <FileText className="w-4 h-4" /> Yêu cầu thuê
+                  <FileText className="w-4 h-4 text-[#0072bc]" /> Yêu cầu thuê
                 </Link>
               )}
               <Link
                 to="/profile"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 p-2 hover:bg-brand-navy-800 rounded-lg text-sm font-medium"
+                className="flex items-center gap-2 p-2 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-semibold"
               >
-                <UserIcon className="w-4 h-4" /> Hồ sơ cá nhân
+                <UserIcon className="w-4 h-4 text-[#0072bc]" /> Hồ sơ cá nhân
               </Link>
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-2 p-2 hover:bg-brand-navy-800 rounded-lg text-sm font-medium text-rose-400 text-left"
+                className="flex w-full items-center gap-2 p-2 hover:bg-rose-50 rounded-lg text-sm font-bold text-rose-600 text-left"
               >
                 <LogOut className="w-4 h-4" /> Đăng xuất
               </button>
             </>
           ) : (
-            <div className="pt-2 border-t border-brand-navy-800 flex flex-col gap-2">
+            <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
               <Link
                 to="/login"
                 onClick={() => setIsOpen(false)}
-                className="flex justify-center p-2 hover:bg-brand-navy-800 rounded-lg text-sm font-medium text-center"
+                className="flex justify-center p-2 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-semibold text-center"
               >
                 Đăng nhập
               </Link>
               <Link
                 to="/register"
                 onClick={() => setIsOpen(false)}
-                className="flex justify-center bg-brand-teal-600 hover:bg-brand-teal-700 text-white p-2.5 rounded-lg text-sm font-semibold text-center"
+                className="flex justify-center bg-[#0072bc] hover:bg-[#0062a3] text-white p-2.5 rounded-lg text-sm font-semibold text-center"
               >
                 Đăng ký
               </Link>
