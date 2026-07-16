@@ -54,7 +54,7 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'success',
-    message: 'Welcome to RentNow API',
+    message: 'Welcome to iStudent API',
     version: '1.0.0'
   });
 });

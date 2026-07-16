@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { User, IUser } from '../models/User';
 import { AppError } from '../utils/errors';
 import { AuthenticatedRequest } from '../middlewares/auth.middleware';
-import { checkObjectId } from './room.controller';
+import { checkObjectId, uploadStreamToCloudinary } from './room.controller';
 import { changePasswordSchema } from '../validators/auth.validator';
 
 const sanitizeUser = (user: IUser) => {
@@ -171,5 +171,27 @@ export const updateUserStatus = async (req: AuthenticatedRequest, res: Response,
     });
   } catch (error) {
     next(error);
+  }
+};
+
+// @desc    Upload avatar (Private)
+// @route   POST /api/v1/users/upload-avatar
+// @access  Private
+export const uploadAvatar = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    if (!req.file) {
+      return next(new AppError('Please select a file to upload', 400));
+    }
+
+    const imageUrl = await uploadStreamToCloudinary(req.file.buffer);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        avatar: imageUrl,
+      },
+    });
+  } catch (error) {
+    next(new AppError('Avatar upload failed. Please try again.', 500));
   }
 };

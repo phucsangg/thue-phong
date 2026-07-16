@@ -283,10 +283,31 @@ export const RoomDetails = () => {
                     min="1"
                     max="60"
                     value={durationMonths}
-                    onChange={(e) => setDurationMonths(parseInt(e.target.value, 10))}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      setDurationMonths(isNaN(val) ? 0 : val);
+                    }}
                     className="block w-full px-3 py-2 border border-gray-200 rounded-xl text-brand-navy-950 focus:outline-none focus:ring-2 focus:ring-brand-teal-500/20 focus:border-brand-teal-500 transition-all text-sm font-medium"
                   />
                 </div>
+
+                {/* Dynamic Price Breakdown */}
+                {durationMonths > 0 && (
+                  <div className="p-4 bg-brand-navy-950/5 border border-brand-navy-950/10 rounded-xl space-y-2 text-xs font-semibold text-gray-600">
+                    <div className="flex justify-between">
+                      <span>Đơn giá:</span>
+                      <span>{room.pricePerMonth.toLocaleString('vi-VN')}đ / tháng</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Thời hạn:</span>
+                      <span>{durationMonths} tháng</span>
+                    </div>
+                    <div className="flex justify-between border-t border-dashed border-gray-250 pt-2 font-bold text-brand-navy-950 text-sm">
+                      <span>Tổng ước tính:</span>
+                      <span className="text-brand-teal-600 font-black">{(room.pricePerMonth * durationMonths).toLocaleString('vi-VN')}đ</span>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5 flex items-center gap-1">
@@ -320,7 +341,7 @@ export const RoomDetails = () => {
           <div className="bg-gray-50 border border-gray-150 p-5 rounded-2xl space-y-3">
             <h4 className="font-bold text-brand-navy-950 text-xs uppercase tracking-wider flex items-center gap-1.5 text-gray-400">
               <Shield className="w-4 h-4 text-brand-teal-600" />
-              Cam kết từ RentNow
+              Cam kết từ iStudent
             </h4>
             <p className="text-xs text-gray-500 leading-relaxed font-semibold">
               Tất cả các phòng được đăng tải đều qua kiểm duyệt thực tế. Nếu phòng không đúng thông tin khi nhận phòng, hãy liên hệ hỗ trợ 24/7.

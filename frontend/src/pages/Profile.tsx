@@ -16,6 +16,8 @@ import {
   MapPin,
   AlignLeft,
   Info,
+  Upload,
+  Loader2,
 } from 'lucide-react';
 
 const profileSchema = z.object({
@@ -49,6 +51,8 @@ export const Profile = () => {
   const {
     register: registerProfile,
     handleSubmit: handleProfileSubmit,
+    setValue: setProfileValue,
+    watch: watchProfile,
     formState: { errors: profileErrors },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -62,6 +66,28 @@ export const Profile = () => {
       bio: (user as any)?.bio || '',
     },
   });
+
+  const watchedAvatar = watchProfile('avatar');
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+
+  const handleAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingAvatar(true);
+    try {
+      const res = await authService.uploadAvatar(file);
+      if (res.status === 'success' && res.data?.avatar) {
+        setProfileValue('avatar', res.data.avatar, { shouldDirty: true });
+        showToast('Tải ảnh đại diện lên thành công!', 'success');
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Lỗi khi tải ảnh đại diện lên';
+      showToast(message, 'error');
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
 
   const {
     register: registerPassword,
@@ -132,7 +158,7 @@ export const Profile = () => {
           <div className="relative">
             <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-brand-teal-500 shadow-md bg-slate-50 relative">
               <img
-                src={user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200'}
+                src={watchedAvatar || user?.avatar || '/avatar.jpg'}
                 alt="Avatar"
                 className="w-full h-full object-cover"
               />
@@ -267,18 +293,35 @@ export const Profile = () => {
                 {/* Avatar URL */}
                 <div className="md:col-span-2">
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1.5">
-                    Đường dẫn ảnh đại diện (Avatar URL)
+                    Ảnh đại diện
                   </label>
-                  <div className="relative">
-                    <Image className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
-                    <input
-                      type="text"
-                      placeholder="https://example.com/avatar.jpg"
-                      {...registerProfile('avatar')}
-                      className={`block w-full pl-10 pr-4 py-3 border rounded-xl text-brand-navy-950 placeholder-gray-400 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-teal-500/20 focus:border-brand-teal-500 transition-all ${
-                        profileErrors.avatar ? 'border-rose-300 focus:ring-rose-500/20 focus:border-rose-500' : 'border-gray-200'
-                      }`}
-                    />
+                  <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                    <div className="relative flex-grow">
+                      <Image className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                      <input
+                        type="text"
+                        placeholder="Đường dẫn ảnh hoặc tải file lên..."
+                        {...registerProfile('avatar')}
+                        className={`block w-full pl-10 pr-4 py-3 border rounded-xl text-brand-navy-950 placeholder-gray-400 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-teal-500/20 focus:border-brand-teal-500 transition-all ${
+                          profileErrors.avatar ? 'border-rose-300 focus:ring-rose-500/20 focus:border-rose-500' : 'border-gray-200'
+                        }`}
+                      />
+                    </div>
+                    <label className="flex items-center justify-center gap-1.5 px-5 py-3 border border-dashed border-gray-300 hover:border-brand-teal-555 rounded-xl cursor-pointer bg-gray-50 hover:bg-white text-xs font-bold text-gray-600 transition-all shrink-0">
+                      {isUploadingAvatar ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-brand-teal-500" />
+                      ) : (
+                        <Upload className="w-4 h-4 text-gray-450" />
+                      )}
+                      <span>Tải ảnh lên</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleAvatarFileChange}
+                        disabled={isUploadingAvatar}
+                        className="hidden"
+                      />
+                    </label>
                   </div>
                   {profileErrors.avatar && <p className="mt-1 text-xs font-semibold text-rose-600">{(profileErrors.avatar as any)?.message}</p>}
                 </div>

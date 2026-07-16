@@ -77,4 +77,15 @@ export const authService = {
     const res = await api.get('/admin/dashboard/stats');
     return res.data;
   },
+
+  async uploadAvatar(file: File) {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    const res = await api.post('/users/upload-avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  },
 };

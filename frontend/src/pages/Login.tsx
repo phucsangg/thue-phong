@@ -45,7 +45,7 @@ export const Login = () => {
       if (response.status === 'success' && response.data) {
         const { accessToken, refreshToken, user } = response.data;
         login(accessToken, refreshToken, user);
-        showToast('Chào mừng bạn quay lại với RentNow!', 'success');
+        showToast('Chào mừng bạn quay lại với iStudent!', 'success');
         
         // Redirect based on role
         if (user.role === 'ADMIN') {

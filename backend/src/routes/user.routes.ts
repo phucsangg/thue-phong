@@ -6,10 +6,12 @@ import {
   getAllUsers,
   updateUserRole,
   updateUserStatus,
+  uploadAvatar,
 } from '../controllers/user.controller';
 import { protect, restrictTo } from '../middlewares/auth.middleware';
 import { validateRequest } from '../middlewares/validate.middleware';
 import { changePasswordSchema } from '../validators/auth.validator';
+import { upload } from '../middlewares/upload.middleware';
 
 const router = Router();
 
@@ -19,6 +21,7 @@ router.use(protect);
 // User profile routes
 router.get('/me', getMe);
 router.put('/me', updateMe);
+router.post('/upload-avatar', upload.single('avatar'), uploadAvatar);
 router.put('/change-password', validateRequest(changePasswordSchema), changePassword);
 
 // Admin-only user management routes

@@ -20,11 +20,21 @@ export const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2 hover:scale-102 transition-transform">
-              <span className="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                <span className="bg-gradient-to-tr from-brand-teal-600 to-emerald-500 p-1.5 rounded-lg text-white font-black block shadow-md shadow-brand-teal-500/10">RN</span>
-                <span>Rent<span className="text-brand-teal-400">Now</span></span>
-              </span>
+            <Link to="/" className="flex items-center gap-2.5 hover:scale-102 transition-transform group">
+              <svg className="h-10 w-10 shrink-0 transform transition-transform group-hover:rotate-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 25 50 C 25 22, 75 22, 75 50 C 75 62, 58 75, 45 75" stroke="#0072bc" strokeWidth="11" strokeLinecap="round" />
+                <path d="M 75 50 C 75 78, 25 78, 25 50 C 25 38, 42 25, 55 25" stroke="#f15a24" strokeWidth="11" strokeLinecap="round" />
+              </svg>
+              <div className="flex flex-col leading-none text-left">
+                <span className="text-xl font-black tracking-tight">
+                  <span className="text-[#0072bc]">i</span>
+                  <span className="text-[#f15a24]">Student</span>
+                </span>
+                <span className="text-[8px] font-bold tracking-wider mt-1 flex gap-1">
+                  <span className="text-[#f15a24]">Giá tốt hơn</span>
+                  <span className="text-[#0072bc]">| Chất lượng hơn</span>
+                </span>
+              </div>
             </Link>
           </div>
 

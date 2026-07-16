@@ -15,7 +15,7 @@ export const checkObjectId = (id: any, next: NextFunction): boolean => {
 };
 
 // Helper to upload a buffer stream to Cloudinary
-const uploadStreamToCloudinary = (fileBuffer: Buffer): Promise<string> => {
+export const uploadStreamToCloudinary = (fileBuffer: Buffer): Promise<string> => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       { folder: 'rentnow' },

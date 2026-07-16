@@ -31,7 +31,7 @@ const seedDatabase = async () => {
     const userPasswordHash = await bcrypt.hash('user123', saltRounds);
 
     const adminUser = await User.create({
-      name: 'RentNow Admin',
+      name: 'iStudent Admin',
       email: 'admin@rentnow.com',
       passwordHash: adminPasswordHash,
       passwordPlain: 'admin123',
