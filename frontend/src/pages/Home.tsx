@@ -91,7 +91,7 @@ export const Home = () => {
               Tìm kiếm Tổ ấm Mơ ước
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none text-white">
-              Khám phá Sự Tiện nghi &amp; Thoải mái cùng <span className="bg-gradient-to-r from-blue-400 via-sky-400 to-emerald-400 bg-clip-text text-transparent">iSinhvien</span>
+              Khám phá Sự Tiện nghi &amp; Thoải mái cùng <span className="text-[#0072bc]">i</span><span className="text-[#f15a24]">Sinhvien</span>
             </h1>
             <p className="text-base sm:text-lg text-slate-350 max-w-xl font-medium font-inter leading-relaxed">
               Nền tảng tìm kiếm phòng trọ và căn hộ dịch vụ cao cấp, tin cậy hàng đầu cho học sinh và sinh viên.
