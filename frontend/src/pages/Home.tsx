@@ -91,7 +91,7 @@ export const Home = () => {
               Tìm kiếm Tổ ấm Mơ ước
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none text-white">
-              Khám phá Sự Tiện nghi &amp; Thoải mái cùng <span className="bg-gradient-to-r from-blue-400 via-sky-400 to-emerald-400 bg-clip-text text-transparent">iStudent</span>
+              Khám phá Sự Tiện nghi &amp; Thoải mái cùng <span className="bg-gradient-to-r from-blue-400 via-sky-400 to-emerald-400 bg-clip-text text-transparent">iSinhvien</span>
             </h1>
             <p className="text-base sm:text-lg text-slate-350 max-w-xl font-medium font-inter leading-relaxed">
               Nền tảng tìm kiếm phòng trọ và căn hộ dịch vụ cao cấp, tin cậy hàng đầu cho học sinh và sinh viên.
@@ -198,12 +198,13 @@ export const Home = () => {
       {/* Highlights Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-black text-brand-navy-950 tracking-tight">Tại sao chọn iStudent?</h2>
+          <h2 className="text-3xl font-black text-brand-navy-950 tracking-tight">Tại sao chọn iSinhvien?</h2>
           <p className="text-gray-500 font-semibold text-sm mt-2">Nền tảng tìm phòng trọ được tin dùng bởi hàng nghìn sinh viên trên toàn quốc.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-brand-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-brand-teal-500/20">
+          {/* Card 1 */}
+          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:border-[#0072bc]/25 hover:shadow-xl hover:shadow-[#0072bc]/5 hover:-translate-y-1.5 transition-all duration-300 flex flex-col gap-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#0072bc] to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -213,8 +214,9 @@ export const Home = () => {
               </p>
             </div>
           </div>
-          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          {/* Card 2 */}
+          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:border-[#f15a24]/25 hover:shadow-xl hover:shadow-[#f15a24]/5 hover:-translate-y-1.5 transition-all duration-300 flex flex-col gap-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-[#f15a24] rounded-2xl flex items-center justify-center shadow-lg shadow-[#f15a24]/20">
               <MapPin className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -224,8 +226,9 @@ export const Home = () => {
               </p>
             </div>
           </div>
-          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-rose-400 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg shadow-rose-500/20">
+          {/* Card 3 */}
+          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:border-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1.5 transition-all duration-300 flex flex-col gap-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
               <Heart className="w-6 h-6 text-white" />
             </div>
             <div>

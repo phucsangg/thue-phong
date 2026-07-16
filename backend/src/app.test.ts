@@ -8,7 +8,7 @@ describe('GET /', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({
       status: 'success',
-      message: 'Welcome to iStudent API',
+      message: 'Welcome to iSinhvien API',
       version: '1.0.0'
     });
   });

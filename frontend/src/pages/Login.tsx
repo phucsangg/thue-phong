@@ -45,7 +45,7 @@ export const Login = () => {
       if (response.status === 'success' && response.data) {
         const { accessToken, refreshToken, user } = response.data;
         login(accessToken, refreshToken, user);
-        showToast('Chào mừng bạn quay lại với iStudent!', 'success');
+        showToast('Chào mừng bạn quay lại với iSinhvien!', 'success');
         
         // Redirect based on role
         if (user.role === 'ADMIN') {

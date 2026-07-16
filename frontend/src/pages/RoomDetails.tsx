@@ -341,7 +341,7 @@ export const RoomDetails = () => {
           <div className="bg-gray-50 border border-gray-150 p-5 rounded-2xl space-y-3">
             <h4 className="font-bold text-brand-navy-950 text-xs uppercase tracking-wider flex items-center gap-1.5 text-gray-400">
               <Shield className="w-4 h-4 text-brand-teal-600" />
-              Cam kết từ iStudent
+              Cam kết từ iSinhvien
             </h4>
             <p className="text-xs text-gray-500 leading-relaxed font-semibold">
               Tất cả các phòng được đăng tải đều qua kiểm duyệt thực tế. Nếu phòng không đúng thông tin khi nhận phòng, hãy liên hệ hỗ trợ 24/7.

@@ -263,17 +263,19 @@ export const RoomCard = ({ room }: RoomCardProps) => {
           className="
             mb-3
             min-w-0
-            text-xl
+            text-lg
             font-bold
             leading-snug
             text-brand-navy-950
             transition-colors
             group-hover:text-brand-teal-600
+            h-12
+            line-clamp-2
           "
         >
           <Link
             to={roomDetailUrl}
-            className="block truncate"
+            className="block"
             title={room.name}
           >
             {room.name}
