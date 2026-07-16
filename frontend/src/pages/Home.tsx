@@ -36,7 +36,7 @@ export const Home = () => {
         {/* Ambient Moving Blobs */}
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-brand-teal-500/20 rounded-full filter blur-[100px] animate-ambient-1 pointer-events-none"></div>
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-500/15 rounded-full filter blur-[120px] animate-ambient-2 pointer-events-none"></div>
-        
+
         {/* Subtle grid pattern overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:20px_20px] opacity-75"></div>
 
@@ -80,7 +80,7 @@ export const Home = () => {
       {/* Stats Strip */}
       <section className="bg-brand-navy-950 py-10">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[{num:'500+', label:'Phòng trống'},{num:'1,200+', label:'Khách hài lòng'},{num:'50+', label:'Quận / Tỉnh thành'},{num:'4.9★', label:'Đánh giá TB'}].map(s => (
+          {[{ num: '500+', label: 'Phòng trống' }, { num: '1,200+', label: 'Khách hài lòng' }, { num: '50+', label: 'Quận / Tỉnh thành' }, { num: '4.9★', label: 'Đánh giá TB' }].map(s => (
             <div key={s.label}>
               <p className="text-3xl font-black text-brand-teal-400">{s.num}</p>
               <p className="text-sm text-slate-400 font-semibold mt-1">{s.label}</p>
@@ -101,7 +101,7 @@ export const Home = () => {
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="font-extrabold text-brand-navy-950 text-base mb-2">Thanh toán An toàn</h3>
+              <h3 className="font-extrabold text-brand-navy-950 text-base mb-2">Thanh toán an toàn</h3>
               <p className="text-sm text-gray-500 leading-relaxed">
                 Giao dịch trực tiếp, các điều khoản đã được xác thực và quản lý hợp đồng minh bạch.
               </p>
@@ -112,7 +112,7 @@ export const Home = () => {
               <MapPin className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="font-extrabold text-brand-navy-950 text-base mb-2">Vị trí Đắc địa</h3>
+              <h3 className="font-extrabold text-brand-navy-950 text-base mb-2">Vị trí đắc địa</h3>
               <p className="text-sm text-gray-500 leading-relaxed">
                 Các phòng nằm gần trường đại học, khu thương mại sầm uất và các bãi biển.
               </p>
@@ -123,7 +123,7 @@ export const Home = () => {
               <Heart className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="font-extrabold text-brand-navy-950 text-base mb-2">Thoải mái Tối đa</h3>
+              <h3 className="font-extrabold text-brand-navy-950 text-base mb-2">Thoải mái tối đa</h3>
               <p className="text-sm text-gray-500 leading-relaxed">
                 Phòng được phân loại rõ ràng theo nhu cầu của bạn với thông tin chi tiết chính xác.
               </p>

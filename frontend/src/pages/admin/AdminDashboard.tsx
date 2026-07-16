@@ -456,7 +456,7 @@ export const AdminDashboard = () => {
                       <td className="px-6 py-4 font-bold text-brand-navy-950">{room.name}</td>
                       <td className="px-6 py-4 text-xs">{`${room.district}, ${room.city}`}</td>
                       <td className="px-6 py-4 text-xs font-bold text-brand-teal-600">{room.roomType}</td>
-                      <td className="px-6 py-4">${room.pricePerMonth}</td>
+                      <td className="px-6 py-4">{room.pricePerMonth.toLocaleString('vi-VN')}đ</td>
                       <td className="px-6 py-4">
                         <span className="text-xs px-2 py-0.5 rounded-full border bg-slate-50">
                           {room.status}
@@ -584,7 +584,7 @@ export const AdminDashboard = () => {
                         <div className="text-gray-450 mt-0.5">Thời hạn: {r.durationMonths} tháng</div>
                       </td>
                       <td className="px-6 py-4 font-bold text-brand-navy-900">
-                        {r.room ? `$${r.room.pricePerMonth}` : 'N/A'}
+                        {r.room ? `${r.room.pricePerMonth.toLocaleString('vi-VN')}đ` : 'N/A'}
                       </td>
                       <td className="px-6 py-4">
                         <span className="text-xs px-2 py-0.5 rounded-full border bg-slate-55 font-bold">
@@ -736,12 +736,12 @@ export const AdminDashboard = () => {
                 {/* Price */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1.5">
-                    Giá thuê / tháng (USD)
+                    Giá thuê / tháng (VNĐ)
                   </label>
                   <input
                     type="number"
                     {...register('pricePerMonth', { valueAsNumber: true })}
-                    placeholder="Ví dụ: 500"
+                    placeholder="Ví dụ: 5000000"
                     className={`block w-full px-3 py-2 border rounded-xl text-brand-navy-950 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-teal-500/20 focus:border-brand-teal-500 transition-all ${
                       errors.pricePerMonth ? 'border-rose-300' : 'border-gray-200'
                     }`}

@@ -157,7 +157,7 @@ export const MyRequests = () => {
                       </span>
                       {room && (
                         <span className="text-brand-navy-900 font-bold">
-                          ${room.pricePerMonth}/tháng
+                          {room.pricePerMonth.toLocaleString('vi-VN')}đ/tháng
                         </span>
                       )}
                     </div>

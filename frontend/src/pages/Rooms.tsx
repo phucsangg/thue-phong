@@ -192,7 +192,7 @@ export const Rooms = () => {
 
           {/* Price Range Filter */}
           <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Giá thuê tối đa (USD)</label>
+            <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Khoảng giá (VNĐ)</label>
             <div className="flex gap-2 items-center">
               <input
                 type="number"

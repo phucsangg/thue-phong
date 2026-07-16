@@ -171,7 +171,7 @@ export const RoomDetails = () => {
           <div className="grid grid-cols-3 gap-4 p-5 bg-white border border-gray-150 rounded-2xl shadow-sm text-center">
             <div className="space-y-1">
               <span className="block text-xs font-bold text-gray-450 uppercase tracking-wider">Giá thuê</span>
-              <span className="block text-lg sm:text-xl font-black text-brand-navy-950">${room.pricePerMonth}/tháng</span>
+              <span className="block text-lg sm:text-xl font-black text-brand-navy-950">{room.pricePerMonth.toLocaleString('vi-VN')}đ/tháng</span>
             </div>
             <div className="space-y-1 border-x border-gray-100">
               <span className="block text-xs font-bold text-gray-450 uppercase tracking-wider">Diện tích</span>
