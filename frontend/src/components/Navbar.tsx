@@ -22,8 +22,8 @@ export const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2.5 hover:scale-102 transition-transform group">
               <svg className="h-10 w-10 shrink-0 transform transition-transform group-hover:rotate-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 25 50 C 25 22, 75 22, 75 50 C 75 62, 58 75, 45 75" stroke="#0072bc" strokeWidth="11" strokeLinecap="round" />
-                <path d="M 75 50 C 75 78, 25 78, 25 50 C 25 38, 42 25, 55 25" stroke="#f15a24" strokeWidth="11" strokeLinecap="round" />
+                <path d="M 25 50 C 25 22, 75 22, 75 50 C 75 62, 58 75, 45 75" stroke="#f15a24" strokeWidth="11" strokeLinecap="round" />
+                <path d="M 75 50 C 75 78, 25 78, 25 50 C 25 38, 42 25, 55 25" stroke="#0072bc" strokeWidth="11" strokeLinecap="round" />
               </svg>
               <div className="flex flex-col leading-none text-left">
                 <span className="text-xl font-black tracking-tight">
