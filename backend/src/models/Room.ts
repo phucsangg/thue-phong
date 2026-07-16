@@ -3,6 +3,14 @@ import { Schema, model, Document, Types } from 'mongoose';
 export type RoomType = 'SINGLE' | 'DOUBLE' | 'STUDIO' | 'APARTMENT' | 'WHOLE_HOUSE';
 export type RoomStatus = 'AVAILABLE' | 'RENTED' | 'MAINTENANCE' | 'HIDDEN';
 
+export interface IReview {
+  tenantName: string;
+  avatar?: string;
+  rating: number;
+  comment: string;
+  createdAt?: Date;
+}
+
 export interface IRoom extends Document {
   name: string;
   slug: string;
@@ -18,6 +26,8 @@ export interface IRoom extends Document {
   amenities: string[];
   images: string[];
   isFeatured: boolean;
+  reviews: IReview[];
+  rating: number;
   createdBy: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -98,6 +108,20 @@ const roomSchema = new Schema<IRoom>(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Creator User reference is required'],
+    },
+    reviews: {
+      type: [{
+        tenantName: { type: String, required: true },
+        avatar: { type: String },
+        rating: { type: Number, required: true, min: 1, max: 5 },
+        comment: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now }
+      }],
+      default: [],
+    },
+    rating: {
+      type: Number,
+      default: 5.0,
     },
   },
   {

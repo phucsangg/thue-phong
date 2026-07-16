@@ -14,7 +14,8 @@ import {
   CheckCircle, 
   Mail, 
   Phone, 
-  ChevronRight 
+  ChevronRight,
+  Star
 } from 'lucide-react';
 
 const HUMAN_ROOM_TYPES: Record<string, string> = {
@@ -175,13 +176,19 @@ export const RoomDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
         <div className="lg:col-span-2 space-y-8">
           <div className="space-y-4">
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 items-center">
               <span className={`px-3 py-1 rounded-full text-xs font-bold border ${statusColors[room.status]}`}>
                 {statusLabels[room.status] || room.status}
               </span>
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-brand-teal-50 border border-brand-teal-150 text-brand-teal-700">
                 {HUMAN_ROOM_TYPES[room.roomType] || room.roomType}
               </span>
+              {room.rating !== undefined && (
+                <span className="flex items-center gap-1 text-xs font-bold bg-amber-50 border border-amber-250 text-amber-700 px-3 py-1 rounded-full">
+                  <Star className="w-3.5 h-3.5 fill-current text-amber-500" />
+                  {room.rating.toFixed(1)} / 5.0 ({room.reviews?.length || 0} đánh giá)
+                </span>
+              )}
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-black text-brand-navy-950 tracking-tight leading-tight">
@@ -259,6 +266,63 @@ export const RoomDetails = () => {
               </div>
             </div>
           )}
+
+          {/* Tenant Reviews Section */}
+          <div className="border-t border-gray-100 pt-8 space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold text-brand-navy-950 flex items-center gap-2">
+                Đánh giá từ khách thuê
+                {room.rating !== undefined && (
+                  <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                    ★ {room.rating.toFixed(1)}
+                  </span>
+                )}
+              </h3>
+              <span className="text-sm font-bold text-slate-400">
+                {room.reviews?.length || 0} đánh giá
+              </span>
+            </div>
+
+            {room.reviews && room.reviews.length > 0 ? (
+              <div className="space-y-4">
+                {room.reviews.map((rev: any, idx: number) => (
+                  <div key={idx} className="bg-slate-50 border border-slate-100 p-5 rounded-2xl space-y-3 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-[#0072bc]/10 text-[#0072bc] flex items-center justify-center font-bold text-sm border border-[#0072bc]/20">
+                          {rev.tenantName.charAt(0)}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-sm text-brand-navy-950">{rev.tenantName}</h4>
+                          <span className="text-[10px] font-bold text-slate-400">Khách thuê thực tế</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-0.5">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-3.5 h-3.5 ${
+                              i < rev.rating ? 'fill-current text-amber-500' : 'text-slate-200'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-600 font-medium font-inter leading-relaxed">
+                      "{rev.comment}"
+                    </p>
+                    <div className="text-[10px] font-bold text-slate-400 text-right">
+                      {rev.createdAt ? new Date(rev.createdAt).toLocaleDateString('vi-VN') : 'Gần đây'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 bg-slate-50 border border-dashed border-slate-200 rounded-2xl text-slate-400 font-semibold text-sm">
+                Chưa có đánh giá nào cho phòng này.
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="space-y-6">

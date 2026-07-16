@@ -525,13 +525,38 @@ const seedDatabase = async () => {
     ];
 
 
+    const SAMPLE_REVIEWS = [
+      { tenantName: 'Nguyễn Minh Hoàng', rating: 5, comment: 'Phòng sạch sẽ, chủ nhà cực kỳ thân thiện và hỗ trợ nhiệt tình. Vị trí rất tiện đi lại.' },
+      { tenantName: 'Lê Thị Mai Chi', rating: 5, comment: 'Phòng đầy đủ tiện nghi đúng như mô tả, không khí thoáng đãng, an ninh tốt.' },
+      { tenantName: 'Trần Minh Đức', rating: 5, comment: 'Phòng đẹp, nội thất mới. Giá hơi cao một chút nhưng cực kỳ đáng tiền.' },
+      { tenantName: 'Phạm Thanh Thảo', rating: 5, comment: 'Mọi thứ tuyệt vời! Mình ở đây gần 1 năm rồi và chưa có điểm gì để chê.' },
+      { tenantName: 'Hoàng Anh Tuấn', rating: 5, comment: 'Vị trí đắc địa gần sát trường học của mình, đi bộ đi học rất tiện. Highly recommend!' },
+      { tenantName: 'Vũ Hải Yến', rating: 5, comment: 'Phòng khép kín sạch sẽ, khu vực chung được dọn dẹp hàng tuần. Rất hài lòng.' },
+      { tenantName: 'Đặng Quốc Bảo', rating: 5, comment: 'Hệ thống an ninh khoá vân tay cực kỳ an tâm. Chủ nhà tạo mọi điều kiện thuận lợi.' },
+      { tenantName: 'Bùi Phương Linh', rating: 5, comment: 'Gác lửng cao ráo không bị đụng đầu, bếp nấu ăn thoáng không bị ám mùi. Đáng giá 5 sao!' }
+    ];
+
     console.log('Seeding rooms...');
     for (const room of roomsData) {
       const slug = makeSlug(room.name);
+      
+      // Randomly pick 2-3 reviews
+      const numReviews = Math.floor(Math.random() * 2) + 2;
+      const shuffled = [...SAMPLE_REVIEWS].sort(() => 0.5 - Math.random());
+      const selectedReviews = shuffled.slice(0, numReviews).map(r => ({
+        ...r,
+        createdAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000)
+      }));
+
+      const totalRating = selectedReviews.reduce((acc, curr) => acc + curr.rating, 0);
+      const averageRating = Math.round((totalRating / selectedReviews.length) * 10) / 10;
+
       await Room.create({
         ...room,
         slug,
         createdBy: adminUser._id,
+        reviews: selectedReviews,
+        rating: averageRating
       });
     }
 

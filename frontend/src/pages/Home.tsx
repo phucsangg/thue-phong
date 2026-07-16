@@ -5,7 +5,7 @@ import { roomService } from '../services/roomService';
 import { RoomCard } from '../components/RoomCard';
 import type { RoomData } from '../components/RoomCard';
 import { CardSkeleton } from '../components/Skeleton';
-import { Search, MapPin, Sparkles, Shield, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, MapPin, Sparkles, Shield, Heart, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
 const SLIDES = [
   {
@@ -281,6 +281,86 @@ export const Home = () => {
             ))}
           </div>
         )}
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+        <div className="text-center mb-10">
+          <span className="inline-block text-xs font-bold uppercase tracking-widest text-[#0072bc] mb-2">✦ Đánh giá tin cậy</span>
+          <h2 className="text-3xl font-black text-brand-navy-950 tracking-tight">Sinh viên nói gì về iSinhvien?</h2>
+          <p className="text-gray-500 font-semibold text-sm mt-2">Hàng nghìn đánh giá 5 sao từ các bạn sinh viên trên toàn quốc.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Testimonial 1 */}
+          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:border-[#0072bc]/25 hover:shadow-xl hover:shadow-[#0072bc]/5 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between gap-6">
+            <div className="space-y-4">
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-current text-amber-500" />
+                ))}
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed font-semibold font-inter">
+                "Tìm được căn phòng ưng ý chỉ trong 2 ngày nhờ iSinhvien! Giao diện dễ dùng, thông tin phòng chính xác 100% so với thực tế và chủ nhà hỗ trợ cực kỳ nhiệt tình."
+              </p>
+            </div>
+            <div className="flex items-center gap-3 border-t border-slate-50 pt-4">
+              <div className="w-10 h-10 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center font-bold border border-rose-100">
+                N
+              </div>
+              <div>
+                <h4 className="font-extrabold text-sm text-brand-navy-950">Hoàng Yến Nhi</h4>
+                <span className="text-[10px] font-bold text-slate-400">Đại học Ngoại Thương (FTU)</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Testimonial 2 */}
+          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:border-[#f15a24]/25 hover:shadow-xl hover:shadow-[#f15a24]/5 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between gap-6">
+            <div className="space-y-4">
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-current text-amber-500" />
+                ))}
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed font-semibold font-inter">
+                "Hệ thống lọc thông minh tìm kiếm theo bán kính trường học rất tiện lợi. Mình thuê phòng đơn giá rẻ có an ninh vân tay tốt, yên tâm học hành."
+              </p>
+            </div>
+            <div className="flex items-center gap-3 border-t border-slate-50 pt-4">
+              <div className="w-10 h-10 rounded-full bg-sky-50 text-sky-500 flex items-center justify-center font-bold border border-sky-100">
+                Đ
+              </div>
+              <div>
+                <h4 className="font-extrabold text-sm text-brand-navy-950">Phạm Minh Đức</h4>
+                <span className="text-[10px] font-bold text-slate-400">Đại học Bách Khoa Hà Nội</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Testimonial 3 */}
+          <div className="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm hover:border-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between gap-6">
+            <div className="space-y-4">
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-current text-amber-500" />
+                ))}
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed font-semibold font-inter">
+                "Chức năng tính giá tạm tính thời gian thực giúp mình dự toán chi phí chính xác trước khi đặt phòng. Thủ tục cọc trực tuyến minh bạch, rõ ràng."
+              </p>
+            </div>
+            <div className="flex items-center gap-3 border-t border-slate-50 pt-4">
+              <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center font-bold border border-amber-100">
+                B
+              </div>
+              <div>
+                <h4 className="font-extrabold text-sm text-brand-navy-950">Lê Trần Gia Bảo</h4>
+                <span className="text-[10px] font-bold text-slate-400">Đại học Quốc Gia TPHCM</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );

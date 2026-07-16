@@ -4,7 +4,16 @@ import {
   MapPin,
   Maximize,
   Users,
+  Star,
 } from 'lucide-react';
+
+export interface ReviewData {
+  tenantName: string;
+  avatar?: string;
+  rating: number;
+  comment: string;
+  createdAt?: string;
+}
 
 export interface RoomData {
   _id: string;
@@ -47,6 +56,8 @@ export interface RoomData {
   amenities: string[];
   images: string[];
   isFeatured: boolean;
+  reviews?: ReviewData[];
+  rating?: number;
 }
 
 interface RoomCardProps {
@@ -237,25 +248,31 @@ export const RoomCard = ({ room }: RoomCardProps) => {
 
       {/* Nội dung */}
       <div className="flex min-w-0 flex-grow flex-col p-6">
-        {/* Loại phòng */}
-        <div
-          className="
-            mb-3
-            flex
-            items-center
-            gap-2
-            text-xs
-            font-bold
-            uppercase
-            tracking-wider
-            text-brand-teal-600
-          "
-        >
-          <Building className="h-4 w-4 flex-shrink-0" />
-
-          <span className="truncate">
-            {HUMAN_ROOM_TYPES[room.roomType]}
-          </span>
+        {/* Loại phòng & Rating */}
+        <div className="mb-3 flex items-center justify-between">
+          <div
+            className="
+              flex
+              items-center
+              gap-2
+              text-xs
+              font-bold
+              uppercase
+              tracking-wider
+              text-brand-teal-600
+            "
+          >
+            <Building className="h-4 w-4 flex-shrink-0" />
+            <span className="truncate">
+              {HUMAN_ROOM_TYPES[room.roomType]}
+            </span>
+          </div>
+          {room.rating !== undefined && (
+            <div className="flex items-center gap-1 text-xs font-bold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+              <Star className="h-3 w-3 fill-current" />
+              <span>{room.rating.toFixed(1)}</span>
+            </div>
+          )}
         </div>
 
         {/* Tên phòng */}
