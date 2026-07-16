@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { roomService } from '../services/roomService';
@@ -49,6 +49,7 @@ export const RoomDetails = () => {
   const [startDate, setStartDate] = useState('');
   const [durationMonths, setDurationMonths] = useState(6);
   const [message, setMessage] = useState('');
+  const [activeImage, setActiveImage] = useState('');
 
   const { data: room, isLoading, isError } = useQuery({
     queryKey: ['room', slug],
@@ -59,6 +60,12 @@ export const RoomDetails = () => {
     },
     enabled: !!slug,
   });
+
+  useEffect(() => {
+    if (room?.images && room.images.length > 0) {
+      setActiveImage(room.images[0]);
+    }
+  }, [room]);
 
   const bookingMutation = useMutation({
     mutationFn: async () => {
@@ -137,13 +144,32 @@ export const RoomDetails = () => {
         <span className="text-brand-navy-950 truncate max-w-xs">{room.name}</span>
       </nav>
 
-      <div className="relative aspect-[21/9] rounded-3xl overflow-hidden bg-gray-100 shadow-md">
-        <img
-          src={coverImage}
-          alt={room.name}
-          className="object-cover w-full h-full"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-navy-950/40 via-transparent to-transparent"></div>
+      <div className="space-y-4">
+        <div className="relative aspect-[21/9] rounded-3xl overflow-hidden bg-gray-100 shadow-md">
+          <img
+            src={activeImage || coverImage}
+            alt={room.name}
+            className="object-cover w-full h-full transition-all duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-navy-950/40 via-transparent to-transparent"></div>
+        </div>
+        
+        {/* Thumbnails row */}
+        {room.images && room.images.length > 1 && (
+          <div className="flex gap-3 overflow-x-auto py-2 px-1">
+            {room.images.map((img: string, idx: number) => (
+              <button
+                key={idx}
+                onClick={() => setActiveImage(img)}
+                className={`h-16 w-24 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
+                  activeImage === img ? 'border-[#0072bc] scale-105 shadow-sm' : 'border-gray-200 opacity-60 hover:opacity-100'
+                }`}
+              >
+                <img src={img} alt={`Preview ${idx + 1}`} className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">

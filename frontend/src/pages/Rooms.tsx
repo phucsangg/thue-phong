@@ -259,6 +259,49 @@ export const Rooms = () => {
 
         {/* Rooms Grid */}
         <div className="lg:col-span-3 space-y-10">
+          {/* Active Filter Chips */}
+          {(queryParams.search || queryParams.city || queryParams.roomType || queryParams.priceMin || queryParams.priceMax || queryParams.areaMin || queryParams.areaMax) && (
+            <div className="flex flex-wrap gap-2 items-center p-4 bg-slate-50 border border-slate-100 rounded-2xl">
+              <span className="text-xs font-bold text-slate-400 mr-1">Bộ lọc đang bật:</span>
+              {queryParams.search && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-sm">
+                  Từ khóa: "{queryParams.search}"
+                  <button onClick={() => { setSearch(''); applyFilters({ search: '' }); }} className="hover:text-red-500 text-sm font-black shrink-0 transition-colors">×</button>
+                </span>
+              )}
+              {queryParams.city && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-sm">
+                  {queryParams.city}
+                  <button onClick={() => { setCity(''); applyFilters({ city: '' }); }} className="hover:text-red-500 text-sm font-black shrink-0 transition-colors">×</button>
+                </span>
+              )}
+              {queryParams.roomType && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-sm">
+                  {ROOM_TYPES.find(t => t.value === queryParams.roomType)?.label || queryParams.roomType}
+                  <button onClick={() => { setRoomType(''); applyFilters({ roomType: '' }); }} className="hover:text-red-500 text-sm font-black shrink-0 transition-colors">×</button>
+                </span>
+              )}
+              {(queryParams.priceMin || queryParams.priceMax) && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-sm">
+                  Giá: {queryParams.priceMin ? `${Number(queryParams.priceMin).toLocaleString()}đ` : '0đ'} - {queryParams.priceMax ? `${Number(queryParams.priceMax).toLocaleString()}đ` : 'Tối đa'}
+                  <button onClick={() => { setPriceMin(''); setPriceMax(''); applyFilters({ priceMin: '', priceMax: '' }); }} className="hover:text-red-500 text-sm font-black shrink-0 transition-colors">×</button>
+                </span>
+              )}
+              {(queryParams.areaMin || queryParams.areaMax) && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-sm">
+                  Diện tích: {queryParams.areaMin ? `${queryParams.areaMin}m²` : '0m²'} - {queryParams.areaMax ? `${queryParams.areaMax}m²` : 'Tối đa'}
+                  <button onClick={() => { setAreaMin(''); setAreaMax(''); applyFilters({ areaMin: '', areaMax: '' }); }} className="hover:text-red-500 text-sm font-black shrink-0 transition-colors">×</button>
+                </span>
+              )}
+              <button
+                onClick={handleResetFilters}
+                className="text-xs font-bold text-[#0072bc] hover:text-[#0062a3] transition-colors hover:underline px-2"
+              >
+                Xóa tất cả
+              </button>
+            </div>
+          )}
+
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, idx) => (
