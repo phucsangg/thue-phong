@@ -67,7 +67,7 @@ const seedDatabase = async () => {
       {
         name: 'Studio Hiện Đại Trung Tâm Quận 1',
         roomType: 'STUDIO' as RoomType,
-        description: 'Căn hộ studio ấm cúng, hiện đại nằm ngay trung tâm Thành phố Hồ Chí Minh. Nội thất cao cấp đầy đủ, phù hợp cho người đi làm trẻ hoặc sinh viên.',
+        description: 'Căn hộ studio sang trọng, ấm cúng và đầy đủ tiện nghi ngay trung tâm Quận 1. Được trang bị điều hòa Inverter thế hệ mới tiết kiệm điện, giường King-size cao cấp, tivi thông minh, máy giặt riêng, và căn bếp hiện đại có sẵn bếp từ hồng ngoại và tủ lạnh side-by-side. Không gian sống được thiết kế tối giản ngập tràn ánh sáng tự nhiên từ cửa sổ kính lớn sát trần. Vị trí đắc địa, chỉ mất 3 phút đi bộ ra phố đi bộ Nguyễn Huệ, xung quanh nhiều quán cà phê, siêu thị tiện lợi 24/7 và hệ thống an ninh 3 lớp cực kỳ an toàn cho sinh viên và người đi làm trẻ.',
         address: '123 Đường Nguyễn Huệ, Phường Bến Nghé',
         district: 'Quận 1',
         city: 'Thành phố Hồ Chí Minh',
@@ -76,13 +76,18 @@ const seedDatabase = async () => {
         maxPeople: 2,
         status: 'AVAILABLE' as RoomStatus,
         amenities: ['Wifi', 'Điều hòa', 'Bếp', 'Máy giặt', 'Tủ lạnh', 'Smart TV', 'Thang máy', 'Bảo vệ 24/7'],
-        images: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600'],
+        images: [
+          'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600',
+          'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=600',
+          'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=600',
+          'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=600'
+        ],
         isFeatured: true,
       },
       {
         name: 'Phòng Đơn Sinh Viên Gần Bách Khoa Hà Nội',
         roomType: 'SINGLE' as RoomType,
-        description: 'Phòng đơn giá rẻ cạnh Đại học Bách Khoa Hà Nội. Khu vực yên tĩnh, nhà vệ sinh chung sạch sẽ, có bình nóng lạnh.',
+        description: 'Phòng trọ đơn khép kín giá rẻ, đặc biệt phù hợp cho các bạn tân sinh viên trường Đại học Bách Khoa, Kinh Tế Quốc Dân hoặc Xây Dựng Hà Nội. Phòng trang bị đầy đủ giường đơn chắc chắn, tủ quần áo hai buồng rộng rãi, bàn học tập chuẩn kích thước và quạt mát. Vệ sinh khép kín sạch sẽ có sẵn bình nóng lạnh. Nằm trong khu dân trí cao cực kỳ an ninh và yên tĩnh phục vụ tốt nhất cho việc học tập nghiên cứu. Chi phí điện nước được tính theo giá nhà nước rõ ràng, minh bạch.',
         address: '45 Đường Tạ Quang Bửu, Phường Bách Khoa',
         district: 'Quận Hai Bà Trưng',
         city: 'Hà Nội',
@@ -91,13 +96,17 @@ const seedDatabase = async () => {
         maxPeople: 1,
         status: 'AVAILABLE' as RoomStatus,
         amenities: ['Wifi', 'Điều hòa', 'Giường', 'Tủ quần áo', 'Chỗ để xe'],
-        images: ['https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=600'],
+        images: [
+          'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=600',
+          'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=600',
+          'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&q=80&w=600'
+        ],
         isFeatured: false,
       },
       {
         name: 'Căn Hộ 2 Phòng Ngủ View Sông Thảo Điền',
         roomType: 'APARTMENT' as RoomType,
-        description: 'Căn hộ sang trọng 2 phòng ngủ với tầm nhìn toàn cảnh sông Sài Gòn. Tầng cao, ban công rộng, hồ bơi và phòng gym đẳng cấp.',
+        description: 'Căn hộ sang trọng tại dự án cao cấp Masteri Thảo Điền Quận 2. Gồm 2 phòng ngủ lớn tràn ngập ánh sáng, ban công rộng rãi với tầm nhìn vô cực ôm trọn dòng sông Sài Gòn thơ mộng. Full nội thất cao cấp nhập khẩu từ châu Âu bao gồm sofa da cao cấp, bếp đảo tiện nghi, máy giặt sấy đồng bộ, tivi OLED 65 inch. Tiện ích nội khu miễn phí cao cấp như hồ bơi tràn bờ dài 50m, phòng tập gym đầy đủ thiết bị hiện đại, sân chơi thể thao và trung tâm thương mại Vincom Mega Mall ngay dưới chân tòa nhà. Thích hợp cho hộ gia đình hoặc nhóm bạn sinh viên ở ghép.',
         address: 'Masteri Thảo Điền, 159 Đường Xa Lộ Hà Nội',
         district: 'Quận 2',
         city: 'Thành phố Hồ Chí Minh',
@@ -106,7 +115,12 @@ const seedDatabase = async () => {
         maxPeople: 4,
         status: 'AVAILABLE' as RoomStatus,
         amenities: ['Wifi', 'Điều hòa', 'Bếp', 'Máy giặt', 'Tủ lạnh', 'Hồ bơi', 'Phòng gym', 'Ban công', 'Bảo vệ 24/7'],
-        images: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=600'],
+        images: [
+          'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=600',
+          'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600',
+          'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=600',
+          'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=600'
+        ],
         isFeatured: true,
       },
       {
