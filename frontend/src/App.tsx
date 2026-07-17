@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { ScrollToTop } from './components/ScrollToTop';
 import { Home } from './pages/Home';
 import { Rooms } from './pages/Rooms';
 import { RoomDetails } from './pages/RoomDetails';
@@ -13,6 +14,9 @@ import { VerifyEmail } from './pages/VerifyEmail';
 import { Profile } from './pages/Profile';
 import { MyRequests } from './pages/MyRequests';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { TermsOfService } from './pages/TermsOfService';
+import { Support } from './pages/Support';
 import type { ReactNode } from 'react';
 
 // Protected Route wrapper component
@@ -41,6 +45,7 @@ const ProtectedRoute = ({ children, allowedRoles }: { children: ReactNode; allow
 function App() {
   return (
     <div className="flex flex-col min-h-screen bg-brand-navy-50 font-inter">
+      <ScrollToTop />
       <Navbar />
       <main className="flex-grow">
         <Routes>
@@ -53,6 +58,9 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/support" element={<Support />} />
 
           {/* Authenticated User / Admin Routes */}
           <Route

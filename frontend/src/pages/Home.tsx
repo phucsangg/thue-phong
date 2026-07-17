@@ -39,21 +39,6 @@ export const Home = () => {
   const [searchVal, setSearchVal] = useState('');
   const [activeSlide, setActiveSlide] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % SLIDES.length);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleNextSlide = () => {
-    setActiveSlide((prev) => (prev + 1) % SLIDES.length);
-  };
-
-  const handlePrevSlide = () => {
-    setActiveSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
-  };
-
   // Fetch featured rooms
   const { data, isLoading, isError } = useQuery({
     queryKey: ['featuredRooms'],
@@ -62,6 +47,32 @@ export const Home = () => {
       return response.data?.rooms as RoomData[];
     },
   });
+
+  const featuredSlides = data && data.length > 0
+    ? data.slice(0, 4).map(room => ({
+        image: room.images?.[0] || 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800',
+        title: room.name,
+        price: room.pricePerMonth ? (room.currency === 'USD' ? `${Math.round(room.pricePerMonth * 26450).toLocaleString('vi-VN')}₫/tháng` : `${Math.round(room.pricePerMonth).toLocaleString('vi-VN')}₫/tháng`) : 'Liên hệ',
+        location: `${room.district}, ${room.city}`,
+        slug: room.slug,
+        isReal: true
+      }))
+    : SLIDES.map(s => ({ ...s, slug: '', isReal: false }));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % featuredSlides.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [featuredSlides.length]);
+
+  const handleNextSlide = () => {
+    setActiveSlide((prev) => (prev + 1) % featuredSlides.length);
+  };
+
+  const handlePrevSlide = () => {
+    setActiveSlide((prev) => (prev - 1 + featuredSlides.length) % featuredSlides.length);
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,53 +134,58 @@ export const Home = () => {
 
           {/* Right Column: Sliding Preview Showcase */}
           <div className="lg:col-span-5 relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
-            {SLIDES.map((slide, idx) => (
+            {featuredSlides.map((slide, idx) => (
               <div
                 key={slide.title}
                 className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${
                   idx === activeSlide ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-105 pointer-events-none'
                 }`}
               >
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-full object-cover"
-                />
-                {/* Bottom glassmorphic preview widget */}
-                <div className="absolute bottom-5 left-5 right-5 p-4 rounded-2xl bg-brand-navy-950/70 backdrop-blur-md border border-white/10 text-left space-y-1 shadow-lg">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-extrabold text-sm sm:text-base text-white truncate max-w-[70%]">
-                      {slide.title}
-                    </h3>
-                    <span className="text-xs font-black text-brand-teal-400 shrink-0">
-                      {slide.price}
-                    </span>
+                <Link
+                  to={slide.slug ? `/rooms/${slide.slug}` : '/rooms'}
+                  className="block w-full h-full relative cursor-pointer group"
+                >
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  {/* Bottom glassmorphic preview widget */}
+                  <div className="absolute bottom-5 left-5 right-5 p-4 rounded-2xl bg-brand-navy-950/70 backdrop-blur-md border border-white/10 text-left space-y-1 shadow-lg group-hover:bg-brand-navy-950/80 transition-colors">
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-extrabold text-sm sm:text-base text-white truncate max-w-[70%] group-hover:text-brand-teal-400 transition-colors">
+                        {slide.title}
+                      </h3>
+                      <span className="text-xs font-black text-brand-teal-400 shrink-0">
+                        {slide.price}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 text-slate-350 text-xs font-semibold">
+                      <MapPin className="w-3.5 h-3.5 text-brand-teal-500 shrink-0" />
+                      <span className="truncate">{slide.location}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 text-slate-350 text-xs font-semibold">
-                    <MapPin className="w-3.5 h-3.5 text-brand-teal-500 shrink-0" />
-                    <span className="truncate">{slide.location}</span>
-                  </div>
-                </div>
+                </Link>
               </div>
             ))}
 
             {/* Slider arrows */}
-            <button
-              onClick={handlePrevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 h-9 w-9 flex items-center justify-center rounded-full bg-brand-navy-950/60 backdrop-blur-sm border border-white/10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-brand-teal-500/70"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
             <button
               onClick={handleNextSlide}
               className="absolute right-4 top-1/2 -translate-y-1/2 z-20 h-9 w-9 flex items-center justify-center rounded-full bg-brand-navy-950/60 backdrop-blur-sm border border-white/10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-brand-teal-500/70"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
+            <button
+              onClick={handlePrevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 h-9 w-9 flex items-center justify-center rounded-full bg-brand-navy-950/60 backdrop-blur-sm border border-white/10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-brand-teal-500/70"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
             {/* Navigation Indicators */}
             <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-              {SLIDES.map((_, idx) => (
+              {featuredSlides.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveSlide(idx)}
