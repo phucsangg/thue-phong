@@ -50,6 +50,28 @@ app.use(hpp());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
+// Custom NoSQL Query Injection Sanitizer
+const sanitizeData = (obj: any): any => {
+  if (obj instanceof Object) {
+    for (const key in obj) {
+      if (key.startsWith('$')) {
+        delete obj[key];
+      } else {
+        sanitizeData(obj[key]);
+      }
+    }
+  }
+  return obj;
+};
+
+const nosqlSanitizer = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body) sanitizeData(req.body);
+  if (req.query) sanitizeData(req.query);
+  if (req.params) sanitizeData(req.params);
+  next();
+};
+app.use(nosqlSanitizer);
+
 // Root route
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({

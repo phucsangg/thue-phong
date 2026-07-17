@@ -49,7 +49,6 @@ export const register = async (
       name,
       email,
       passwordHash,
-      passwordPlain: password,
       phone,
       avatar,
       role: 'USER',
@@ -373,7 +372,7 @@ export const checkVerification = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { email } = req.params;
+    const email = req.params.email as string;
     const user = await User.findOne({ email: email.toLowerCase() });
 
     if (!user) {

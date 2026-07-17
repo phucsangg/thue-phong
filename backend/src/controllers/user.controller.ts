@@ -78,7 +78,6 @@ export const changePassword = async (req: AuthenticatedRequest, res: Response, n
 
     const saltRounds = 10;
     user.passwordHash = await bcrypt.hash(newPassword, saltRounds);
-    user.passwordPlain = newPassword;
     await user.save();
 
     res.status(200).json({
