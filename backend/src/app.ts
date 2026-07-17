@@ -25,8 +25,24 @@ if (process.env.NODE_ENV === 'development') {
 // Security Middlewares
 app.use(helmet());
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  process.env.FRONTEND_URL,
+].filter(Boolean) as string[];
+
+const sanitizedOrigins = allowedOrigins.map(origin => origin.replace(/\/$/, ''));
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: (origin: string | undefined, callback: any) => {
+    if (!origin) return callback(null, true);
+    const isAllowed = sanitizedOrigins.some(allowed => origin.replace(/\/$/, '') === allowed);
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Origin ${origin} not allowed by CORS`));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
