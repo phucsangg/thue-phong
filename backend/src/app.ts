@@ -25,22 +25,27 @@ if (process.env.NODE_ENV === 'development') {
 // Security Middlewares
 app.use(helmet());
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  process.env.FRONTEND_URL,
-].filter(Boolean) as string[];
-
-const sanitizedOrigins = allowedOrigins.map(origin => origin.replace(/\/$/, ''));
-
 const corsOptions = {
   origin: (origin: string | undefined, callback: any) => {
+    // Allow requests with no origin (like mobile apps, postman, curl)
     if (!origin) return callback(null, true);
-    const isAllowed = sanitizedOrigins.some(allowed => origin.replace(/\/$/, '') === allowed);
-    if (isAllowed) {
+
+    const sanitizedOrigin = origin.replace(/\/$/, '');
+    
+    // Check if origin matches localhost, vercel.app, or explicitly configured FRONTEND_URL
+    const isLocalhost = sanitizedOrigin.startsWith('http://localhost:') || sanitizedOrigin.startsWith('http://127.0.0.1:');
+    const isVercel = sanitizedOrigin.endsWith('.vercel.app');
+    
+    let isConfigured = false;
+    if (process.env.FRONTEND_URL) {
+      isConfigured = sanitizedOrigin === process.env.FRONTEND_URL.replace(/\/$/, '');
+    }
+
+    if (isLocalhost || isVercel || isConfigured) {
       callback(null, true);
     } else {
-      callback(new Error(`Origin ${origin} not allowed by CORS`));
+      // Disallow origin without throwing an error (to prevent 500 crash)
+      callback(null, false);
     }
   },
   credentials: true,
