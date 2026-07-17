@@ -79,12 +79,18 @@ export const register = async (
         html,
       });
     } catch (err) {
-      console.error('Failed to send verification email:', err);
+      console.error('Failed to send verification email, auto-verifying user instead:', err);
+      newUser.isVerified = true;
+      newUser.verificationToken = undefined;
+      newUser.verificationTokenExpire = undefined;
+      await newUser.save();
     }
 
     res.status(201).json({
       status: 'success',
-      message: 'Đăng ký thành công! Vui lòng kiểm tra email của bạn để xác thực tài khoản.',
+      message: newUser.isVerified 
+        ? 'Đăng ký thành công! Do dịch vụ email bị giới hạn, tài khoản của bạn đã được xác thực tự động.'
+        : 'Đăng ký thành công! Vui lòng kiểm tra email của bạn để xác thực tài khoản.',
       data: {
         user: sanitizeUser(newUser),
       },
