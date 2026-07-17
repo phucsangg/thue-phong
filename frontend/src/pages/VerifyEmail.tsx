@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { CheckCircle2, XCircle, Loader2, Sparkles } from 'lucide-react';
@@ -9,8 +9,12 @@ export const VerifyEmail = () => {
   
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Đang tiến hành xác thực tài khoản của bạn...');
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     const performVerification = async () => {
       if (!token) {
         setStatus('error');
