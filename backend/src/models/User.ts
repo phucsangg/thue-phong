@@ -15,6 +15,8 @@ export interface IUser extends Document {
   isVerified: boolean;
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
+  verificationToken?: string;
+  verificationTokenExpire?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -77,6 +79,12 @@ const userSchema = new Schema<IUser>(
     resetPasswordExpire: {
       type: Date,
     },
+    verificationToken: {
+      type: String,
+    },
+    verificationTokenExpire: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -85,5 +93,6 @@ const userSchema = new Schema<IUser>(
 
 // Indexes
 userSchema.index({ resetPasswordToken: 1 });
+userSchema.index({ verificationToken: 1 });
 
 export const User = model<IUser>('User', userSchema);

@@ -42,6 +42,9 @@ export const register = async (
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
+    const verificationToken = crypto.randomBytes(20).toString('hex');
+    const verificationTokenExpire = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
     const newUser = await User.create({
       name,
       email,
@@ -51,14 +54,75 @@ export const register = async (
       avatar,
       role: 'USER',
       isVerified: false,
+      verificationToken,
+      verificationTokenExpire,
     });
+
+    const verifyUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email?token=${verificationToken}`;
+    const message = `Chào mừng bạn đến với iSinhvien!\n\nVui lòng xác thực tài khoản của bạn bằng cách nhấp vào liên kết sau:\n\n${verifyUrl}\n\nLiên kết này sẽ hết hạn trong 24 giờ.`;
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h2 style="color: #0072bc; text-align: center;">Chào mừng bạn đến với iSinhvien!</h2>
+        <p>Cảm ơn bạn đã đăng ký tài khoản tại iSinhvien - Nền tảng thuê phòng trọ sinh viên hàng đầu.</p>
+        <p>Vui lòng nhấn vào nút bên dưới để xác thực tài khoản của bạn:</p>
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${verifyUrl}" style="background-color: #0072bc; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Xác thực tài khoản</a>
+        </div>
+        <p style="color: #64748b; font-size: 12px;">Liên kết này sẽ hết hạn trong 24 giờ. Nếu bạn không thực hiện đăng ký này, vui lòng bỏ qua email.</p>
+      </div>
+    `;
+
+    try {
+      await sendEmail({
+        to: email,
+        subject: '[iSinhvien] Xác thực tài khoản của bạn',
+        text: message,
+        html,
+      });
+    } catch (err) {
+      console.error('Failed to send verification email:', err);
+    }
 
     res.status(201).json({
       status: 'success',
-      message: 'Registration successful',
+      message: 'Đăng ký thành công! Vui lòng kiểm tra email của bạn để xác thực tài khoản.',
       data: {
         user: sanitizeUser(newUser),
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Verify email token
+// @route   GET /api/v1/auth/verify-email/:token
+// @access  Public
+export const verifyEmail = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { token } = req.params;
+
+    const user = await User.findOne({
+      verificationToken: token,
+      verificationTokenExpire: { $gt: new Date() },
+    });
+
+    if (!user) {
+      return next(new AppError('Mã xác thực không hợp lệ hoặc đã hết hạn', 400));
+    }
+
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    user.verificationTokenExpire = undefined;
+    await user.save();
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Xác thực tài khoản thành công! Bây giờ bạn đã có thể đăng nhập.',
     });
   } catch (error) {
     next(error);
@@ -86,6 +150,11 @@ export const login = async (
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) {
       return next(new AppError('Invalid email or password', 401));
+    }
+
+    // Check if email is verified
+    if (!user.isVerified) {
+      return next(new AppError('Tài khoản chưa được xác thực email. Vui lòng kiểm tra email của bạn.', 401));
     }
 
     const payload = { userId: user._id.toString(), role: user.role };
@@ -224,15 +293,17 @@ export const forgotPassword = async (
     // Create reset URL
     const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
 
-    const subject = 'RentNow - Password Reset Request';
-    const text = `You requested a password reset. Please make a PUT request to: \n\n ${resetUrl}`;
+    const subject = '[iSinhvien] Yêu cầu đặt lại mật khẩu';
+    const text = `Bạn nhận được email này vì bạn (hoặc ai đó) đã yêu cầu đặt lại mật khẩu cho tài khoản iSinhvien của mình. Vui lòng nhấp vào liên kết sau để hoàn tất:\n\n${resetUrl}\n\nLiên kết này sẽ hết hạn trong 10 phút.`;
     const html = `
-      <div style="font-family: sans-serif; padding: 20px; color: #333;">
-        <h2>Password Reset Request</h2>
-        <p>You requested a password reset for your RentNow account.</p>
-        <p>Please click the button below to reset your password. This link is valid for 10 minutes.</p>
-        <a href="${resetUrl}" style="display: inline-block; padding: 10px 20px; background-color: #0d9488; color: #fff; text-decoration: none; border-radius: 5px;">Reset Password</a>
-        <p>If you did not request this, please ignore this email.</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h2 style="color: #0072bc; text-align: center;">Đặt lại mật khẩu tài khoản</h2>
+        <p>Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản iSinhvien của bạn.</p>
+        <p>Vui lòng nhấn vào nút bên dưới để tiến hành đặt lại mật khẩu mới. Liên kết này chỉ có hiệu lực trong vòng 10 phút:</p>
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${resetUrl}" style="background-color: #0072bc; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Đặt lại mật khẩu</a>
+        </div>
+        <p style="color: #64748b; font-size: 12px;">Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này và mật khẩu của bạn sẽ giữ nguyên không đổi.</p>
       </div>
     `;
 
@@ -240,7 +311,7 @@ export const forgotPassword = async (
 
     res.status(200).json({
       status: 'success',
-      message: 'Reset password link sent to email',
+      message: 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.',
     });
   } catch (error) {
     next(error);

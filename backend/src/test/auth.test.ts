@@ -73,6 +73,9 @@ describe('Auth Integration Tests', () => {
           password: 'password123',
         });
 
+      // Manually verify email in database for testing login
+      await User.updateOne({ email: 'jane@example.com' }, { isVerified: true });
+
       const res = await request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -114,6 +117,9 @@ describe('Auth Integration Tests', () => {
           password: 'password123',
         });
 
+      // Manually verify email
+      await User.updateOne({ email: 'jane@example.com' }, { isVerified: true });
+
       const loginRes = await request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -154,6 +160,9 @@ describe('Auth Integration Tests', () => {
           password: 'password123',
         });
 
+      // Manually verify email
+      await User.updateOne({ email: 'jane@example.com' }, { isVerified: true });
+
       const loginRes = await request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -175,6 +184,42 @@ describe('Auth Integration Tests', () => {
       // Verify token deleted
       const storedToken = await RefreshToken.findOne({ token });
       expect(storedToken).toBeNull();
+    });
+  });
+
+  describe('GET /api/v1/auth/verify-email/:token', () => {
+    it('should successfully verify email with a valid token', async () => {
+      // Register first
+      await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          name: 'Verify Test',
+          email: 'verify@example.com',
+          password: 'password123',
+        });
+
+      const user = await User.findOne({ email: 'verify@example.com' });
+      expect(user).toBeDefined();
+      expect(user?.isVerified).toBe(false);
+      expect(user?.verificationToken).toBeDefined();
+
+      const res = await request(app)
+        .get(`/api/v1/auth/verify-email/${user?.verificationToken}`);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.message).toContain('Xác thực tài khoản thành công');
+
+      const updatedUser = await User.findOne({ email: 'verify@example.com' });
+      expect(updatedUser?.isVerified).toBe(true);
+      expect(updatedUser?.verificationToken).toBeUndefined();
+    });
+
+    it('should reject email verification with an invalid token', async () => {
+      const res = await request(app)
+        .get('/api/v1/auth/verify-email/nonexistent_token');
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.message).toContain('không hợp lệ hoặc đã hết hạn');
     });
   });
 });

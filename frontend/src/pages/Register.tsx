@@ -39,7 +39,7 @@ export const Register = () => {
     try {
       const response = await authService.register(payload);
       if (response.status === 'success') {
-        showToast('Đăng ký tài khoản thành công! Vui lòng đăng nhập.', 'success');
+        showToast(response.message || 'Đăng ký tài khoản thành công! Vui lòng kiểm tra email để xác thực.', 'success');
         navigate('/login');
       }
     } catch (error: any) {
