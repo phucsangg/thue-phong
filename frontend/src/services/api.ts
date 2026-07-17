@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://isinhvien-backend-ohq9.onrender.com/api/v1';
+let API_URL = import.meta.env.VITE_API_URL || 'https://isinhvien-backend-ohq9.onrender.com/api/v1';
+
+// Auto-append /api/v1 if it is missing
+if (API_URL && !API_URL.endsWith('/api/v1') && !API_URL.endsWith('/api/v1/')) {
+  const sanitized = API_URL.replace(/\/$/, '');
+  API_URL = `${sanitized}/api/v1`;
+}
 
 export const api = axios.create({
   baseURL: API_URL,
