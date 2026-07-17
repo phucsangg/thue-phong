@@ -363,3 +363,28 @@ export const resetPassword = async (
     next(error);
   }
 };
+
+// @desc    Check email verification status
+// @route   GET /api/v1/auth/check-verification/:email
+// @access  Public
+export const checkVerification = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { email } = req.params;
+    const user = await User.findOne({ email: email.toLowerCase() });
+
+    if (!user) {
+      return next(new AppError('User not found', 404));
+    }
+
+    res.status(200).json({
+      status: 'success',
+      isVerified: user.isVerified,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

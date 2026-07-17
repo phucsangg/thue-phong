@@ -46,6 +46,11 @@ export const authService = {
     return res.data;
   },
 
+  async checkVerification(email: string) {
+    const res = await api.get(`/auth/check-verification/${email}`);
+    return res.data;
+  },
+
   // User Profile services
   async getMe() {
     const res = await api.get('/users/me');

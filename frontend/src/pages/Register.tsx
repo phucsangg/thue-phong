@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '../context/ToastContext';
 import { authService } from '../services/authService';
-import { User as UserIcon, Mail, Lock, Phone, ArrowRight } from 'lucide-react';
+import { User as UserIcon, Mail, Lock, Phone, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Họ tên phải có ít nhất 2 ký tự').max(50),
@@ -20,6 +20,10 @@ export const Register = () => {
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isPendingVerification, setIsPendingVerification] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
+  const [isVerifiedSuccess, setIsVerifiedSuccess] = useState(false);
+  const [checkLoading, setCheckLoading] = useState(false);
 
   const {
     register,
@@ -40,7 +44,8 @@ export const Register = () => {
       const response = await authService.register(payload);
       if (response.status === 'success') {
         showToast(response.message || 'Đăng ký tài khoản thành công! Vui lòng kiểm tra email để xác thực.', 'success');
-        navigate('/login');
+        setRegisteredEmail(data.email);
+        setIsPendingVerification(true);
       }
     } catch (error: any) {
       const message = error.response?.data?.message || 'Đăng ký thất bại. Email có thể đã tồn tại.';
@@ -49,6 +54,124 @@ export const Register = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    let interval: any;
+    if (isPendingVerification && registeredEmail && !isVerifiedSuccess) {
+      interval = setInterval(async () => {
+        try {
+          const res = await authService.checkVerification(registeredEmail);
+          if (res.isVerified) {
+            setIsVerifiedSuccess(true);
+            showToast('Xác thực email thành công! Đang chuyển hướng...', 'success');
+            clearInterval(interval);
+            setTimeout(() => {
+              navigate('/login');
+            }, 3000);
+          }
+        } catch (err) {
+          console.error('Polling verification status failed:', err);
+        }
+      }, 3000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isPendingVerification, registeredEmail, isVerifiedSuccess]);
+
+  const handleManualCheck = async () => {
+    if (checkLoading || isVerifiedSuccess) return;
+    setCheckLoading(true);
+    try {
+      const res = await authService.checkVerification(registeredEmail);
+      if (res.isVerified) {
+        setIsVerifiedSuccess(true);
+        showToast('Xác thực email thành công! Đang chuyển hướng...', 'success');
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+      } else {
+        showToast('Hệ thống chưa ghi nhận tài khoản đã xác thực. Vui lòng nhấn vào nút trong email của bạn.', 'info');
+      }
+    } catch (err) {
+      showToast('Có lỗi xảy ra khi kiểm tra trạng thái xác thực.', 'error');
+    } finally {
+      setCheckLoading(false);
+    }
+  };
+
+  if (isPendingVerification) {
+    return (
+      <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 bg-slate-50/50">
+        <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl border border-gray-100 shadow-xl shadow-slate-100/50 text-center relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#0072bc] to-[#f15a24]"></div>
+          
+          {isVerifiedSuccess ? (
+            <div className="space-y-6 py-6">
+              <div className="flex justify-center relative">
+                <div className="absolute inset-0 bg-[#0072bc]/10 rounded-full blur-xl scale-75 animate-pulse"></div>
+                <CheckCircle2 className="w-20 h-20 text-[#0072bc] relative z-10" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-black text-brand-navy-950 flex items-center justify-center gap-1.5">
+                  <Sparkles className="w-5 h-5 text-amber-500 animate-pulse" />
+                  Xác thực thành công!
+                </h2>
+                <p className="text-sm font-semibold text-slate-500 leading-relaxed">
+                  Tài khoản của bạn đã được kích hoạt. Đang đưa bạn đến trang Đăng nhập...
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6 py-4">
+              <div className="flex justify-center">
+                <div className="relative flex items-center justify-center w-24 h-24">
+                  <div className="absolute w-20 h-20 border-4 border-[#0072bc] border-t-transparent rounded-full animate-spin"></div>
+                  <Mail className="w-10 h-10 text-[#0072bc] animate-pulse" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <h2 className="text-2xl font-black text-brand-navy-950">Chờ xác thực Email</h2>
+                <p className="text-sm text-slate-500 font-semibold leading-relaxed">
+                  Chúng tôi đã gửi một email xác thực đến địa chỉ:<br />
+                  <span className="font-extrabold text-[#0072bc]">{registeredEmail}</span>
+                </p>
+                <div className="bg-slate-50 border border-slate-100 p-4 rounded-2xl text-xs text-slate-550 leading-relaxed font-semibold">
+                  Mở email và nhấp vào nút <span className="text-[#0072bc] font-bold">Xác thực tài khoản</span> để kích hoạt tài khoản của bạn. Trang này sẽ tự động chuyển hướng sau khi hoàn tất.
+                </div>
+              </div>
+              
+              <div className="pt-4 space-y-3">
+                <button
+                  type="button"
+                  onClick={handleManualCheck}
+                  disabled={checkLoading}
+                  className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-brand-navy-900 hover:bg-brand-teal-600 transition-all shadow-md disabled:opacity-50"
+                >
+                  {checkLoading ? (
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    'Tôi đã xác thực xong'
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsPendingVerification(false);
+                    setRegisteredEmail('');
+                  }}
+                  className="block w-full text-xs font-bold text-slate-400 hover:text-brand-navy-950 hover:underline transition-all"
+                >
+                  Thay đổi email / Quay lại đăng ký
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">

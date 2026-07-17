@@ -7,6 +7,7 @@ import {
   forgotPassword,
   resetPassword,
   verifyEmail,
+  checkVerification,
 } from '../controllers/auth.controller';
 import { validateRequest } from '../middlewares/validate.middleware';
 import {
@@ -20,6 +21,7 @@ const router = Router();
 
 router.post('/register', validateRequest(registerSchema), register);
 router.get('/verify-email/:token', verifyEmail);
+router.get('/check-verification/:email', checkVerification);
 router.post('/login', validateRequest(loginSchema), login);
 router.post('/refresh-token', refreshToken);
 router.post('/logout', logout);
