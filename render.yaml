@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: isinhvien-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        value: mongodb://admin:1234@ac-ka4j1jh-shard-00-00.uhi3lnv.mongodb.net:27017,ac-ka4j1jh-shard-00-01.uhi3lnv.mongodb.net:27017,ac-ka4j1jh-shard-00-02.uhi3lnv.mongodb.net:27017/rentnow?ssl=true&replicaSet=atlas-d0vpez-shard-0&authSource=admin&appName=Cluster0
+      - key: JWT_ACCESS_SECRET
+        value: d8c9735d4f1345adbaea35e5d165bb0d9e13b86cb49f3e4e94b29b68eb406a44
+      - key: JWT_REFRESH_SECRET
+        value: 7f55b9e58b1f49618b0825f381ad79c13d8d67c51486718d7efcd82fa5e01b7a
+      - key: JWT_ACCESS_EXPIRE
+        value: 15m
+      - key: JWT_REFRESH_EXPIRE
+        value: 7d
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        value: sangkho12112@gmail.com
+      - key: SMTP_PASS
+        value: hfskovczykbmcspc
+      - key: SMTP_FROM
+        value: iSinhvien <sangkho12112@gmail.com>
+      - key: FRONTEND_URL
+        value: https://thue_phong-62ct.vercel.app
